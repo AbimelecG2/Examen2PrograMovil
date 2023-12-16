@@ -3,7 +3,7 @@ import 'package:flutter_examen/models/book.dart';
 
 class BookService {
   final Dio _dio = Dio();
-  final String _baseUrl = 'https://stephen-king-api.onrender.com';
+  final String _baseUrl = 'https://stephen-king-api.onrender.com/api/books';
 
   Future<List<Book>> getBooks() async {
     try {
