@@ -17,17 +17,31 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'LIBRERIA',
         theme: ThemeData(
-          primarySwatch: Colors.teal,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          appBarTheme: AppBarTheme(
+            color: Colors.brown,
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
         ),
         home: Scaffold(
           appBar: AppBar(
-            title: Text('LIBRERIA'),
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.library_books),
+                SizedBox(width: 10),
+                Text('LIBRERIA', style: TextStyle(color: Colors.white)), // Aquí se añade el título
+              ],
+            ),
           ),
-          body:
-              bookListScreen(), // Ensure bookListScreen is embedded within a Material widget
+          body: BookListScreen(),
         ),
       ),
     );
   }
 }
+
+
