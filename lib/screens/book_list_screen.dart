@@ -7,11 +7,33 @@ class BookListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bookProvider = Provider.of<BookProvider>(context);
-    
+
+    if (bookProvider.isLoading) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Library'),
+          backgroundColor: Colors.grey[900],
+        ),
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (bookProvider.error != null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Library'),
+          backgroundColor: Colors.grey[900],
+        ),
+        body: Center(
+          child: Text('Error: ${bookProvider.error}'),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Library'),
-        backgroundColor: Colors.grey[900], // Un color oscuro para el AppBar
+        backgroundColor: Colors.grey[900],
         actions: [
           IconButton(
             icon: Icon(Icons.add),
@@ -27,35 +49,33 @@ class BookListScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: bookProvider.books.isEmpty
-          ? Center(child: CircularProgressIndicator())
-          : ListView.separated(
-              itemCount: bookProvider.books.length,
-              separatorBuilder: (context, index) => Divider(),
-              itemBuilder: (context, index) {
-                final book = bookProvider.books[index];
-                return ListTile(
-                  leading: Image.network(
-                      'https://dical.es/modules/ph_simpleblog/featured/78.jpg', 
-                      fit: BoxFit.cover,
-                      width: 50,
-                      height: 50,
-                    ),
-                  title: Text(book.title),
-                  subtitle: Text('by Stephen King'), // Agrega el autor al modelo de libro si es necesario
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BookDetailsScreen(book: book),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-      // ... otras propiedades de Scaffold como drawer si es necesario
+      body: ListView.separated(
+        itemCount: bookProvider.books.length,
+        separatorBuilder: (context, index) => Divider(),
+        itemBuilder: (context, index) {
+          final book = bookProvider.books[index];
+          return ListTile(
+            leading:Image.network(
+             'https://upload.wikimedia.org/wikipedia/commons/e/e3/Stephen_King_-_2011_%28cropped%29.jpg', // Asegúrate de cambiar esto por la URL real de la imagen del libro
+             fit: BoxFit.cover,
+             width: 50,
+             height: 50,
+              ),
+
+            title: Text(book.title),
+            subtitle: Text('by  Stephen King '), // Asegúrate de que el autor sea una propiedad en tu modelo de libro
+            trailing: Icon(Icons.arrow_forward_ios),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BookDetailsScreen(book: book),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
