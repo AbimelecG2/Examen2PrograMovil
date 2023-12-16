@@ -1,17 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_examen/models/book.dart';
 
-class BookDetailsScreen extends StatelessWidget {
+class bookDetailScreen extends StatelessWidget {
   final Book book;
-
-  BookDetailsScreen({required this.book});
+  bookDetailScreen({required this.book});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(book.title)),
-      body: ListView(
-        children: book.villains.map((villain) => ListTile(title: Text(villain.name))).toList(),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Title: ${book.title}',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'ID: ${book.id}',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const Text(
+              'Description: ',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              '${book.description}',
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Villains:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: book.villains
+                  .map((villain) => Text(villain['name'] ?? 'Unknown'))
+                  .toList(),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,76 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_examen/screens/book_details_screen.dart';
 import 'package:provider/provider.dart';
-import '../providers/book_provider.dart';
-import 'book_details_screen.dart';
+import 'package:flutter_examen/providers/book_provider.dart';
 
-class BookListScreen extends StatelessWidget {
+class bookListScreen extends StatefulWidget {
+  @override
+  _BookListScreenState createState() => _BookListScreenState();
+}
+
+class _BookListScreenState extends State<bookListScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() =>
+        Provider.of<BookListProvider>(context, listen: false).fetchBook());
+  }
+
   @override
   Widget build(BuildContext context) {
-    final bookProvider = Provider.of<BookProvider>(context);
-
-    if (bookProvider.isLoading) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Library'),
-          backgroundColor: Colors.grey[900],
-        ),
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    if (bookProvider.error != null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Library'),
-          backgroundColor: Colors.grey[900],
-        ),
-        body: Center(
-          child: Text('Error: ${bookProvider.error}'),
-        ),
-      );
-    }
-
     return Scaffold(
+      // Wrap your widget with a Scaffold
       appBar: AppBar(
-        title: Text('Library'),
-        backgroundColor: Colors.grey[900],
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              // Acción para agregar un libro
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              // Acción para mostrar más opciones
-            },
-          ),
-        ],
+        title: Text('Book List'),
       ),
-      body: ListView.separated(
-        itemCount: bookProvider.books.length,
-        separatorBuilder: (context, index) => Divider(),
-        itemBuilder: (context, index) {
-          final book = bookProvider.books[index];
-          return ListTile(
-            leading:Image.network(
-             'https://upload.wikimedia.org/wikipedia/commons/e/e3/Stephen_King_-_2011_%28cropped%29.jpg', // Asegúrate de cambiar esto por la URL real de la imagen del libro
-             fit: BoxFit.cover,
-             width: 50,
-             height: 50,
-              ),
-
-            title: Text(book.title),
-            subtitle: Text('by  Stephen King '), // Asegúrate de que el autor sea una propiedad en tu modelo de libro
-            trailing: Icon(Icons.arrow_forward_ios),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BookDetailsScreen(book: book),
-                ),
+      body: Consumer<BookListProvider>(
+        builder: (context, bookListProvider, child) {
+          if (bookListProvider.books.isEmpty) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return ListView.builder(
+            itemCount: bookListProvider.books.length,
+            itemBuilder: (context, index) {
+              final book = bookListProvider.books[index];
+              return ListTile(
+                title: Text(book.title),
+                subtitle: Text(book.description),
+                onTap: () {
+                  // Implement navigation to book details
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => bookDetailScreen(book: book)));
+                },
               );
             },
           );
