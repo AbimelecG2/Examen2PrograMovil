@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_examen/providers/book_list_provider.dart';
-import 'package:flutter_examen/screens/book_list_screen.dart';
+import 'providers/book_provider.dart';
+import 'screens/book_list_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,19 +10,18 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => BookListProvider()),
-      ],
+    return ChangeNotifierProvider(
+      create: (context) => BookProvider(),
       child: MaterialApp(
         title: 'Stephen King Library',
         theme: ThemeData(
-          primarySwatch: Colors.green,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+          primarySwatch: Colors.blue,
         ),
         home: BookListScreen(),
       ),
     );
   }
 }
+
+
 

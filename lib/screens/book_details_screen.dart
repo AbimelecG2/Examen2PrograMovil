@@ -10,17 +10,10 @@ class BookDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(book.title)),
-      body: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(book.description),
-            SizedBox(height: 10),
-            Text('Villains: ${book.villains.join(', ')}'),
-          ],
-        ),
+      body: ListView(
+        children: book.villains.map((villain) => ListTile(title: Text(villain.name))).toList(),
       ),
     );
   }
 }
+
